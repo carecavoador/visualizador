@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import (
     QMainWindow,
     QGraphicsView,
@@ -10,6 +12,18 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QPixmap, QImageReader, QImage, QAction, QPainter
 from PySide6.QtCore import QRectF
 
+
+# Test images
+IMAGE_A = (
+    Path(__file__)
+    .parent.parent.joinpath("tests/sample_images/test_image_a.jpg")
+    .as_posix()
+)
+IMAGE_B = (
+    Path(__file__)
+    .parent.parent.joinpath("tests/sample_images/test_image_b.jpg")
+    .as_posix()
+)
 
 # Disable the file size limit to open images.
 QImageReader.setAllocationLimit(0)
@@ -85,7 +99,8 @@ class DifferenceViewer(QMainWindow):
         # )
 
         # Test Image
-        file_name = r"C:\Users\everton.souza\python\visualizador\visualizador\test_image_a.jpg"
+        # file_name = r"C:\Users\everton.souza\python\visualizador\visualizador\test_image_a.jpg"
+        file_name = IMAGE_A
 
         if file_name:
             image = QImage(file_name)
