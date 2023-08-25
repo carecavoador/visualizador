@@ -34,7 +34,6 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         
         self.image_a = None
         self.image_b = None
-        self.composite = QImage()
 
         # Zoom in action
         self.zoom_in_action = QAction("Aumentar Zoom", self)
@@ -79,10 +78,9 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         if file_name:
             self.image_a = QImage(file_name)
             self.edit_img_a.setText(file_name)
-            
-        self.show_differences()
-
-
+        
+        if self.image_a is not None and self.image_b is not None:
+            self.show_differences()
 
     def load_image_b(self):
         options = QFileDialog.Options()
@@ -99,30 +97,30 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         if file_name:
             self.image_b = QImage(file_name)
             self.edit_img_b.setText(file_name)
-        
-        self.show_differences()
 
+        if self.image_a is not None and self.image_b is not None:
+            self.show_differences()
 
     def show_differences(self):
-        if self.image_a is not None and self.image_b is not None:
-            self.scene.clear()
-            self.view.update()
-            self.composite = self.image_a
+        composite = self.image_a
+        other = self.image_b
+        other.invertPixels()
+        painter = QPainter()
+        painter.begin(composite)
+        # p.setCompositionMode(p.CompositionMode.CompositionMode_Difference)
+        painter.setOpacity(0.5)
+        painter.drawImage(0, 0, other)
+        painter.end()
+        self.display_image(composite)
 
-            self.image_b.invertPixels()
-
-            painter = QPainter()
-            painter.begin(self.composite)
-            # p.setCompositionMode(p.CompositionMode.CompositionMode_Difference)
-            painter.setOpacity(0.5)
-            painter.drawImage(0, 0, self.image_b)
-            painter.end()
-            
-            pixmap = QPixmap.fromImage(self.composite)
-            item = QGraphicsPixmapItem(pixmap)
-            self.scene.addItem(item)
-            self.view.setSceneRect(QRectF(pixmap.rect()))
-            self.view.setScene(self.scene)
+    def display_image(self, image: QImage):            
+        self.scene.clear()
+        self.view.update()
+        pixmap = QPixmap.fromImage(image)
+        item = QGraphicsPixmapItem(pixmap)
+        self.scene.addItem(item)
+        self.view.setSceneRect(QRectF(pixmap.rect()))
+        self.view.setScene(self.scene)
 
     def zoom_in(self):
         self.view.scale(1.2, 1.2)
