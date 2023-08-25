@@ -32,6 +32,7 @@ QImageReader.setAllocationLimit(0)
 class DifferenceViewer(QMainWindow):
     def __init__(self):
         super().__init__()
+        # self.setupUi(self)
 
         self.initUI()
         self.open_image()
@@ -64,17 +65,17 @@ class DifferenceViewer(QMainWindow):
 
         # Zoom in
         self.zoom_in_action = QAction("Aumentar Zoom", self)
-        self.zoom_in_action.setShortcut("Ctrl+=")
+        self.zoom_in_action.setShortcut("=")
         self.zoom_in_action.triggered.connect(self.zoom_in)
 
         # Actual size
         self.zoom_actual_action = QAction("Zoom 100%", self)
-        self.zoom_actual_action.setShortcut("Ctrl+0")
+        self.zoom_actual_action.setShortcut("0")
         self.zoom_actual_action.triggered.connect(self.zoom_actual)
 
         # Zoom out
         self.zoom_out_action = QAction("Diminuir Zoom", self)
-        self.zoom_out_action.setShortcut("Ctrl+-")
+        self.zoom_out_action.setShortcut("-")
         self.zoom_out_action.triggered.connect(self.zoom_out)
 
     def create_menus(self):
@@ -103,8 +104,18 @@ class DifferenceViewer(QMainWindow):
         file_name = IMAGE_A
 
         if file_name:
-            image = QImage(file_name)
-            pixmap = QPixmap.fromImage(image)
+            imagem = QImage(IMAGE_A)
+            imagem_b = QImage(IMAGE_B)
+            imagem_b.invertPixels()
+            p = QPainter()
+            p.begin(imagem)
+            # p.setCompositionMode(p.CompositionMode.CompositionMode_Difference)
+            p.setOpacity(0.5)
+            p.drawImage(0, 0, imagem_b)
+            p.end()
+            # image = QImage(file_name)
+            # pixmap = QPixmap.fromImage(image)
+            pixmap = QPixmap.fromImage(imagem)
             item = QGraphicsPixmapItem(pixmap)
             self.scene.clear()
             self.scene.addItem(item)
