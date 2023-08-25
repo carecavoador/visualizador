@@ -31,10 +31,10 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-
-        # Open image action
-        self.open_action = QAction("Abrir Imagem...", self)
-        self.open_action.triggered.connect(self.open_image)
+        
+        self.image_a = None
+        self.image_b = None
+        self.composite = QImage()
 
         # Zoom in action
         self.zoom_in_action = QAction("Aumentar Zoom", self)
@@ -51,60 +51,75 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         self.zoom_actual_action.setShortcut("0")
         self.zoom_actual_action.triggered.connect(self.zoom_reset)
 
-        # Menu bar
-        self.file_menu = self.menuBar().addMenu("Imagem")
-        self.file_menu.addAction(self.open_action)
-        self.file_menu = self.menuBar()
-        self.view_menu = self.menuBar()
-        self.view_menu = self.menuBar().addMenu("Zoom")
-        self.view_menu.addAction(self.zoom_in_action)
-        self.view_menu.addAction(self.zoom_out_action)
-        self.view_menu.addAction(self.zoom_actual_action)
-
         # Buttons
         self.btn_zoom_in.clicked.connect(self.zoom_in)
         self.btn_zoom_out.clicked.connect(self.zoom_out)
         self.btn_zoom_reset.clicked.connect(self.zoom_reset)
+        self.btn_img_a.clicked.connect(self.load_image_a)
+        self.btn_img_b.clicked.connect(self.load_image_b)
 
         self.scene = QGraphicsScene()
         self.view.setScene(self.scene)
         self.view.setDragMode(QGraphicsView.ScrollHandDrag)
         self.view.setRenderHint(QPainter.SmoothPixmapTransform)
         self.view.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
-        
-        # Just for testing...
-        self.open_image()
 
-    def open_image(self):
+    def load_image_a(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
 
-        # file_name, _ = QFileDialog.getOpenFileName(
-        #     self,
-        #     "Abrir Imagem",
-        #     "",
-        #     "Imagens (*.png *.xpm *.jpg *.bmp);;Todos os arquivos (*)",
-        #     options=options,
-        # )
-
-        # Test Image
-        file_name = IMAGE_A
+        file_name, _ = QFileDialog.getOpenFileName(
+            self,
+            "Abrir Imagem",
+            "",
+            "Imagens (*.jpg *.png *.tif *.bmp);;Todos os arquivos (*)",
+            options=options,
+        )
 
         if file_name:
-            imagem = QImage(IMAGE_A)
-            imagem_b = QImage(IMAGE_B)
-            imagem_b.invertPixels()
-            p = QPainter()
-            p.begin(imagem)
-            # p.setCompositionMode(p.CompositionMode.CompositionMode_Difference)
-            p.setOpacity(0.5)
-            p.drawImage(0, 0, imagem_b)
-            p.end()
-            # image = QImage(file_name)
-            # pixmap = QPixmap.fromImage(image)
-            pixmap = QPixmap.fromImage(imagem)
-            item = QGraphicsPixmapItem(pixmap)
+            self.image_a = QImage(file_name)
+            self.edit_img_a.setText(file_name)
+            
+        self.show_differences()
+
+
+
+    def load_image_b(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+
+        file_name, _ = QFileDialog.getOpenFileName(
+            self,
+            "Abrir Imagem",
+            "",
+            "Imagens (*.jpg *.png *.tif *.bmp);;Todos os arquivos (*)",
+            options=options,
+        )
+
+        if file_name:
+            self.image_b = QImage(file_name)
+            self.edit_img_b.setText(file_name)
+        
+        self.show_differences()
+
+
+    def show_differences(self):
+        if self.image_a is not None and self.image_b is not None:
             self.scene.clear()
+            self.view.update()
+            self.composite = self.image_a
+
+            self.image_b.invertPixels()
+
+            painter = QPainter()
+            painter.begin(self.composite)
+            # p.setCompositionMode(p.CompositionMode.CompositionMode_Difference)
+            painter.setOpacity(0.5)
+            painter.drawImage(0, 0, self.image_b)
+            painter.end()
+            
+            pixmap = QPixmap.fromImage(self.composite)
+            item = QGraphicsPixmapItem(pixmap)
             self.scene.addItem(item)
             self.view.setSceneRect(QRectF(pixmap.rect()))
             self.view.setScene(self.scene)
