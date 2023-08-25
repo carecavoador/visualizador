@@ -9,6 +9,11 @@ readme = "README.md"
 python = ">=3.11,<3.12"
 pyside6 = "^6.5.2"
 
+[tool.pylint.'MESSAGES CONTROL']
+
+disable=[
+  'no-name-in-module'
+]
 
 [build-system]
 requires = ["poetry-core"]
