@@ -1,8 +1,5 @@
 import sys
-
 from PySide6.QtWidgets import QApplication
-
-# from test_viewer import DifferenceViewer
 from visualizador.gui.viewer_window import DifferenceViewer
 
 if __name__ == "__main__":

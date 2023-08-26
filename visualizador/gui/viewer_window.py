@@ -1,4 +1,5 @@
 from pathlib import Path
+from copy import copy
 from PySide6.QtWidgets import (
     QMainWindow,
     QGraphicsView,
@@ -34,6 +35,7 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         
         self.image_a = None
         self.image_b = None
+        self.composite_image = None
 
         # Zoom in action
         self.zoom_in_action = QAction("Aumentar Zoom", self)
@@ -56,6 +58,7 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         self.btn_zoom_reset.clicked.connect(self.zoom_reset)
         self.btn_img_a.clicked.connect(self.load_image_a)
         self.btn_img_b.clicked.connect(self.load_image_b)
+        self.btn_export.clicked.connect(self.export_image)
 
         self.scene = QGraphicsScene()
         self.view.setScene(self.scene)
@@ -63,7 +66,7 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         self.view.setRenderHint(QPainter.SmoothPixmapTransform)
         self.view.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
 
-    def load_image_a(self):
+    def get_filename(self) -> str:
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
 
@@ -74,36 +77,36 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
             "Imagens (*.jpg *.png *.tif *.bmp);;Todos os arquivos (*)",
             options=options,
         )
+        return file_name
 
+    def load_image_a(self):
+        file_name = self.get_filename()
         if file_name:
             self.image_a = QImage(file_name)
             self.edit_img_a.setText(file_name)
-        
-        if self.image_a is not None and self.image_b is not None:
+        if self.image_b is not None:
             self.show_differences()
+        else:
+            self.display_image(self.image_a)
 
     def load_image_b(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.ReadOnly
-
-        file_name, _ = QFileDialog.getOpenFileName(
-            self,
-            "Abrir Imagem",
-            "",
-            "Imagens (*.jpg *.png *.tif *.bmp);;Todos os arquivos (*)",
-            options=options,
-        )
-
+        file_name = self.get_filename()
         if file_name:
             self.image_b = QImage(file_name)
             self.edit_img_b.setText(file_name)
 
-        if self.image_a is not None and self.image_b is not None:
+        if self.image_a is not None:
             self.show_differences()
+        else:
+            self.display_image(self.image_b)
+
+    def export_image(self) -> None:
+        caminho = r"C:\Users\erodr\Python\visualizador\visualizador\teste.png"
+        self.composite_image.save(caminho)
 
     def show_differences(self):
-        composite = self.image_a
-        other = self.image_b
+        composite = copy(self.image_a)
+        other = copy(self.image_b)
         other.invertPixels()
         painter = QPainter()
         painter.begin(composite)
@@ -111,6 +114,7 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         painter.setOpacity(0.5)
         painter.drawImage(0, 0, other)
         painter.end()
+        self.composite_image = composite
         self.display_image(composite)
 
     def display_image(self, image: QImage):            

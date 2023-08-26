@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'difference_viewer.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.5.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -100,6 +100,11 @@ class Ui_DifferenceViewer(object):
 
         self.layout_zoom.addWidget(self.btn_zoom_reset)
 
+        self.btn_export = QPushButton(self.centralwidget)
+        self.btn_export.setObjectName(u"btn_export")
+
+        self.layout_zoom.addWidget(self.btn_export)
+
 
         self.verticalLayout.addLayout(self.layout_zoom)
 
@@ -128,5 +133,6 @@ class Ui_DifferenceViewer(object):
         self.btn_zoom_in.setText(QCoreApplication.translate("DifferenceViewer", u"Zoom +", None))
         self.btn_zoom_out.setText(QCoreApplication.translate("DifferenceViewer", u"Zoom -", None))
         self.btn_zoom_reset.setText(QCoreApplication.translate("DifferenceViewer", u"Resetar Zoom", None))
+        self.btn_export.setText(QCoreApplication.translate("DifferenceViewer", u"Exportar", None))
     # retranslateUi
 
