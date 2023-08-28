@@ -1,0 +1,9 @@
+☐ Feature: fit to window.
+☐ Feature: reposicionar a segunda imagem sobre a primeira.
+☐ Feature: redimensionar a segunda imagem sobre a primeira.
+☐ Feature: posicionamento automático da segunda imagem sobre a primeira.
+☐ Feature: diferentes modos de visualização das diferenças.
+
+gswin64c -sDEVICE=tiffsep -dNOPAUSE -dBATCH -dSAFER -sOutputFile="C:\Users\everton.souza\Desktop\output.pdf" C:\Users\everton.souza\Desktop\Untitled_2.pdf
+
+-r300 => Resolução 300dpi

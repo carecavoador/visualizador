@@ -6,10 +6,10 @@ from PySide6.QtWidgets import (
     QGraphicsScene,
     QFileDialog,
     QGraphicsPixmapItem,
-    QGraphicsSceneMouseEvent
+    QGraphicsSceneMouseEvent,
 )
 from PySide6.QtGui import QPixmap, QImageReader, QImage, QAction, QPainter
-from PySide6.QtCore import QRectF
+from PySide6.QtCore import QRectF, Qt, QPoint
 from visualizador.gui.difference_viewer_ui import Ui_DifferenceViewer
 
 
@@ -33,9 +33,9 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        
+
         self.second_image_item = None  # To keep track of the second image item
-        
+
         self.image_a = None
         self.image_b = None
         self.composite_image = None
@@ -47,11 +47,17 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         self.action_export.triggered.connect(self.export_image)
         self.action_load_img_a.triggered.connect(self.load_image_a)
         self.action_load_img_b.triggered.connect(self.load_image_b)
-        
+
+        # Radios
+        self.radio_show_img_a.clicked.connect(lambda: self.display_image(self.image_a))
+        self.radio_show_img_b.clicked.connect(lambda: self.display_image(self.image_b))
+        self.radio_show_diff.clicked.connect(self.show_differences)
+
         self.scene = QGraphicsScene()
         self.view.setScene(self.scene)
         self.view.setDragMode(QGraphicsView.ScrollHandDrag)
         self.view.setRenderHint(QPainter.SmoothPixmapTransform)
+        self.view.setRenderHint(QPainter.Antialiasing)
         self.view.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
 
     def get_filename(self) -> str:
@@ -75,7 +81,7 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
             self,
             "Salvar Imagem",
             "",
-            "Arquivo JPEG (*.jpg);;Todos os arquivos (*)",
+            "Imagem JPEG (*.jpg);;Imagem PNG (*.png);;Imagem TIF (*.tif);;Todos os arquivos (*)",
             options=options,
         )
         return file_name
@@ -119,7 +125,7 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         self.composite_image = composite
         self.display_image(composite)
 
-    def display_image(self, image: QImage):            
+    def display_image(self, image: QImage):
         self.scene.clear()
         self.view.update()
         pixmap = QPixmap.fromImage(image)
