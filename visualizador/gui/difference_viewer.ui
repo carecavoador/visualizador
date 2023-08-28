@@ -16,25 +16,24 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QGridLayout" name="layout_img_a">
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="edit_img_a"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="btn_img_a">
-        <property name="text">
-         <string>Carregar...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_img_a">
-        <property name="text">
-         <string>Imagem A:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QLabel" name="label_img_a">
+      <property name="text">
+       <string>Imagem A:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="edit_img_a"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_img_b">
+      <property name="text">
+       <string>Imagem B:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="edit_img_b"/>
     </item>
     <item>
      <widget class="Line" name="line_2">
@@ -42,66 +41,6 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-    </item>
-    <item>
-     <layout class="QGridLayout" name="layout_img_b">
-      <item row="1" column="0">
-       <widget class="QPushButton" name="btn_img_b">
-        <property name="text">
-         <string>Carregar...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="edit_img_b"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_img_b">
-        <property name="text">
-         <string>Imagem B:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="layout_zoom">
-      <item>
-       <widget class="QPushButton" name="btn_zoom_in">
-        <property name="text">
-         <string>Zoom +</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_zoom_out">
-        <property name="text">
-         <string>Zoom -</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_zoom_reset">
-        <property name="text">
-         <string>Resetar Zoom</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_export">
-        <property name="text">
-         <string>Exportar</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </item>
     <item>
      <widget class="QGraphicsView" name="view"/>
@@ -118,7 +57,130 @@
     </rect>
    </property>
   </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>48</width>
+     <height>48</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_load_img_a"/>
+   <addaction name="action_load_img_b"/>
+   <addaction name="separator"/>
+   <addaction name="action_zoom_in"/>
+   <addaction name="action_zoom_out"/>
+   <addaction name="action_zoom_reset"/>
+   <addaction name="separator"/>
+   <addaction name="action_export"/>
+  </widget>
+  <action name="action_zoom_in">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icones/zoom.png</normaloff>:/icones/zoom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom +</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_zoom_out">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icones/zoom(1).png</normaloff>:/icones/zoom(1).png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom -</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+_</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_zoom_reset">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icones/zoom-in.png</normaloff>:/icones/zoom-in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom 1:1</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_export">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icones/image.png</normaloff>:/icones/image.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exportar</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_load_img_a">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icones/letter-a.png</normaloff>:/icones/letter-a.png</iconset>
+   </property>
+   <property name="text">
+    <string>Carregar Imagem A</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_load_img_b">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icones/letter-b.png</normaloff>:/icones/letter-b.png</iconset>
+   </property>
+   <property name="text">
+    <string>Carregar Imagem B</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

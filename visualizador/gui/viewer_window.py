@@ -5,11 +5,12 @@ from PySide6.QtWidgets import (
     QGraphicsView,
     QGraphicsScene,
     QFileDialog,
-    QGraphicsPixmapItem
+    QGraphicsPixmapItem,
+    QGraphicsSceneMouseEvent
 )
 from PySide6.QtGui import QPixmap, QImageReader, QImage, QAction, QPainter
 from PySide6.QtCore import QRectF
-from visualizador.gui.difference_viewer import Ui_DifferenceViewer
+from visualizador.gui.difference_viewer_ui import Ui_DifferenceViewer
 
 
 # Test images
@@ -33,33 +34,20 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
         super().__init__()
         self.setupUi(self)
         
+        self.second_image_item = None  # To keep track of the second image item
+        
         self.image_a = None
         self.image_b = None
         self.composite_image = None
 
-        # Zoom in action
-        self.zoom_in_action = QAction("Aumentar Zoom", self)
-        self.zoom_in_action.setShortcut("=")
-        self.zoom_in_action.triggered.connect(self.zoom_in)
-
-        # Zoom out action
-        self.zoom_out_action = QAction("Diminuir Zoom", self)
-        self.zoom_out_action.setShortcut("-")
-        self.zoom_out_action.triggered.connect(self.zoom_out)
-
-        # Zoom reset action
-        self.zoom_actual_action = QAction("Resetar Zoom", self)
-        self.zoom_actual_action.setShortcut("0")
-        self.zoom_actual_action.triggered.connect(self.zoom_reset)
-
-        # Buttons
-        self.btn_zoom_in.clicked.connect(self.zoom_in)
-        self.btn_zoom_out.clicked.connect(self.zoom_out)
-        self.btn_zoom_reset.clicked.connect(self.zoom_reset)
-        self.btn_img_a.clicked.connect(self.load_image_a)
-        self.btn_img_b.clicked.connect(self.load_image_b)
-        self.btn_export.clicked.connect(self.export_image)
-
+        # Actions
+        self.action_zoom_in.triggered.connect(self.zoom_in)
+        self.action_zoom_out.triggered.connect(self.zoom_out)
+        self.action_zoom_reset.triggered.connect(self.zoom_reset)
+        self.action_export.triggered.connect(self.export_image)
+        self.action_load_img_a.triggered.connect(self.load_image_a)
+        self.action_load_img_b.triggered.connect(self.load_image_b)
+        
         self.scene = QGraphicsScene()
         self.view.setScene(self.scene)
         self.view.setDragMode(QGraphicsView.ScrollHandDrag)
@@ -75,6 +63,19 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
             "Abrir Imagem",
             "",
             "Imagens (*.jpg *.png *.tif *.bmp);;Todos os arquivos (*)",
+            options=options,
+        )
+        return file_name
+
+    def get_save_filename(self) -> str:
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+
+        file_name, _ = QFileDialog.getSaveFileName(
+            self,
+            "Salvar Imagem",
+            "",
+            "Arquivo JPEG (*.jpg);;Todos os arquivos (*)",
             options=options,
         )
         return file_name
@@ -101,8 +102,9 @@ class DifferenceViewer(Ui_DifferenceViewer, QMainWindow):
             self.display_image(self.image_b)
 
     def export_image(self) -> None:
-        caminho = r"C:\Users\erodr\Python\visualizador\visualizador\teste.png"
-        self.composite_image.save(caminho)
+        caminho = self.get_save_filename()
+        if caminho:
+            self.composite_image.save(caminho)
 
     def show_differences(self):
         composite = copy(self.image_a)
