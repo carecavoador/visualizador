@@ -1,3 +1,5 @@
+#!C:\\Users\\everton.souza\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\visualizador-DqT34PtS-py3.11\\Scripts\\python.exe
+
 import sys
 from PySide6.QtWidgets import QApplication
 from visualizador.gui.viewer_window import DifferenceViewer

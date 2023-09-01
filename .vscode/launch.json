@@ -9,7 +9,7 @@
             "name": "Python: main.py File",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/visualizador/main.py",
+            "program": "${workspaceFolder}/visualizador/main.pyw",
             "console": "integratedTerminal",
             "justMyCode": true
         }
