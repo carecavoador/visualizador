@@ -1,14 +1,16 @@
 import sys
 import copy
 
+from PIL import Image, ImageChops, ImageQt
+
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsView, QGraphicsScene, QGraphicsPixmapItem
 from PySide6.QtGui import QPixmap, QImage, QPainter
 from PySide6.QtCore import Qt, Signal, QRectF
 
 
 # Test images
-IMAGE_A = r"C:\Users\everton.souza\Desktop\test_image_a.jpg"
-IMAGE_B = r"C:\Users\everton.souza\Desktop\test_image_b.jpg"
+IMAGE_B = r"C:\python\visualizador\visualizador\test_image_b.jpg"
+IMAGE_A = r"C:\python\visualizador\visualizador\test_image_a.jpg"
 
 
 class KeyboardViewer(QGraphicsView):
@@ -54,11 +56,31 @@ class DifferenceViewer(QMainWindow):
         self.setMinimumSize(800, 600)
         self.setCentralWidget(self.view)
 
-        self.show_differences()
+        self.total_offset = (0, 0)
+        # self.show_differences()
 
 
     def offset_image_b(self, offset):
-        print(offset)
+        x_offset, y_offset = offset
+        
+        self.total_offset = (
+            self.total_offset[0] + x_offset,
+            self.total_offset[1] + y_offset
+        )
+        
+        image_a = Image.open(IMAGE_A)
+        image_b = Image.open(IMAGE_B)
+        
+        new_size = max(image_a.width, image_b.width + x_offset), max(image_a.height, image_b.height + y_offset)
+        
+        composite_image = Image.new(mode='RGB', size=new_size, color='white')
+        composite_image.paste(image_a)
+        temp_b = Image.new(mode='RGB', size=new_size, color='white')
+        temp_b.paste(image_b, box=self.total_offset)
+        temp_b = ImageChops.invert(temp_b)
+        composite_image = ImageChops.blend(composite_image, temp_b, 0.5)
+        
+        self.display_image(ImageQt.ImageQt(composite_image))
 
 
     def show_differences(self):
