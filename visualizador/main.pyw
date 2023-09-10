@@ -1,4 +1,4 @@
-#!C:\\Users\\everton.souza\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\visualizador-DqT34PtS-py3.11\\Scripts\\python.exe
+#!C:\\Users\\everton.souza\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\visualizador-DqT34PtS-py3.11\\Scripts\\pythonw.exe
 
 import sys
 from PySide6.QtWidgets import QApplication
