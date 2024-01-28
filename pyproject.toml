@@ -1,20 +1,17 @@
 [tool.poetry]
-name = "visualizador"
+name = "visualizer"
 version = "0.1.0"
 description = ""
-authors = ["Everton de Souza <e.rodrigo@outlook.com>"]
+authors = ["Careca Voador <e.rodrigo@outlook.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.11,<3.12"
-pyside6 = "^6.5.2"
-pillow = "^10.0.0"
+python = ">=3.12,<3.13"
+PySide6 = "^6.6.1"
+pillow = "^10.2.0"
 
-[tool.pylint.'MESSAGES CONTROL']
-
-disable=[
-  'no-name-in-module'
-]
+[tool.poetry.group.dev.dependencies]
+icecream = "^2.1.3"
 
 [build-system]
 requires = ["poetry-core"]

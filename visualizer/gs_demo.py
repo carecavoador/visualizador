@@ -1,4 +1,4 @@
-from visualizador.gs import gsapi
+from visualizer.gs import gsapi
 
 
 in_filename = r"C:\Users\everton.souza\Desktop\872670_V2 166694 Anabe_5 Small Rolls_D08_12x29 5_4 sanfona__.pdf"

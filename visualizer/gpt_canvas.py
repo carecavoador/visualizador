@@ -1,4 +1,11 @@
-from PySide6.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsPixmapItem, QGraphicsItem, QGraphicsRectItem
+from PySide6.QtWidgets import (
+    QApplication,
+    QGraphicsView,
+    QGraphicsScene,
+    QGraphicsPixmapItem,
+    QGraphicsItem,
+    QGraphicsRectItem,
+)
 from PySide6.QtGui import QPixmap, QPainter, Qt, QImage
 
 import sys
@@ -45,11 +52,16 @@ class ImageViewer(QGraphicsView):
 
         # Load and display an image (you can replace 'your_image.jpg' with the actual image file)
         # self.load_image(r'C:\python\visualizador\visualizador\test_image_a.jpg')
-        
+
         self.setSceneRect(0, 0, 1024, 1024)
-        
-        self.draw_rectangle(r'C:\python\visualizador\visualizador\test_image_a.jpg')
-        self.draw_rectangle(r'C:\python\visualizador\visualizador\test_image_b.jpg', "b")
+
+        self.draw_rectangle(
+            r"C:\Users\erodr\Desktop\Python\visualizador\visualizer\test_image_a.jpg"
+        )
+        self.draw_rectangle(
+            r"C:\Users\erodr\Desktop\Python\visualizador\visualizer\test_image_b.jpg",
+            "b",
+        )
 
     def load_image(self, filename):
         # Create a QGraphicsPixmapItem to display the image
@@ -62,10 +74,9 @@ class ImageViewer(QGraphicsView):
         # Fit the view to the image size
         self.setSceneRect(item.pixmap().rect())
 
-    def draw_rectangle(self, img, t='a'):
+    def draw_rectangle(self, img, t="a"):
         imagem = QImage(img)
-        
-        
+
         # Create a QGraphicsRectItem (rectangle item)
         rect_item = DraggableRectItem(imagem.rect())  # x, y, width, height
 
@@ -78,18 +89,18 @@ class ImageViewer(QGraphicsView):
         brush = rect_item.brush()
         # brush.setColor(Qt.green)
         # brush.setStyle(Qt.SolidPattern)
-        if t == 'b':
-          imagem.invertPixels()
-          # imagem.
-          rect_item.setOpacity(0.5)
+        if t == "b":
+            imagem.invertPixels()
+            # imagem.
+            rect_item.setOpacity(0.5)
         brush.setTextureImage(imagem)
         rect_item.setBrush(brush)
 
         # Add the rectangle item to the scene
         self.scene.addItem(rect_item)
-        
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     viewer = ImageViewer()
     viewer.show()

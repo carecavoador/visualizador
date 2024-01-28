@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QPixmap, QImageReader, QImage, QAction, QPainter
 from PySide6.QtCore import QRectF, Qt, QPoint
-from visualizador.gui.difference_viewer_ui import Ui_DifferenceViewer
+from visualizer.old.gui.difference_viewer_ui import Ui_DifferenceViewer
 
 
 # Test images
