@@ -1,6 +1,10 @@
 import sys
 import copy
 
+from pathlib import Path
+
+from icecream import ic
+
 from PIL import Image, ImageChops, ImageQt
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsView, QGraphicsScene, QGraphicsPixmapItem
@@ -9,9 +13,9 @@ from PySide6.QtCore import Qt, Signal, QRectF
 
 
 # Test images
-IMAGE_B = r"C:\python\visualizador\visualizador\test_image_b.jpg"
-IMAGE_A = r"C:\python\visualizador\visualizador\test_image_a.jpg"
-
+IMAGE_B = Path(__file__).parent.joinpath("test_image_b.jpg").as_posix()
+IMAGE_A = Path(__file__).parent.joinpath("test_image_a.jpg").as_posix()
+ic(IMAGE_A)
 
 class KeyboardViewer(QGraphicsView):
 
